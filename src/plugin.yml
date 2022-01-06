@@ -2,5 +2,9 @@ name: ChickensLaySpawnEggs
 main: hasjamon.chickenslayspawneggs.ChickensLaySpawnEggs
 api-version: 1.17
 authors: [ HasJamOn, Bahm ]
-version: 1.1
+version: 1.2
 description: ChickensLaySpawnEggs plugin
+commands:
+  chickenbonus:
+    description: Shows you the number of named chickens whose aura radius you're inside as well as the total bonus.
+    usage: /<command>
