@@ -18,7 +18,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import oshi.util.tuples.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,9 +47,9 @@ public class ChickensLaySpawnEggs extends JavaPlugin implements Listener, Comman
 
         // If it's an egg and wasn't dropped by a player: Chance to lay a random spawn egg instead
         if (itemStack.getType() == Material.EGG && item.getThrower() == null && item.getPickupDelay() == 10) {
-            Pair<Map<Character, Integer>, Integer> bonuses = calcChickenBonuses(item);
-            Map<Character, Integer> letterBonuses = bonuses.getA();
-            Integer numNamedChickens = bonuses.getB();
+            ChickenBonuses bonuses = calcChickenBonuses(item);
+            Map<Character, Integer> letterBonuses = bonuses.letterBonuses;
+            int numNamedChickens = bonuses.numNamedChickens;
 
             double spawnChance = this.getConfig().getDouble("spawn-egg-chance");
             if (Math.random() <= spawnChance * calcGeneralChickenBonus(numNamedChickens)) {
@@ -65,7 +64,7 @@ public class ChickensLaySpawnEggs extends JavaPlugin implements Listener, Comman
         return Math.log(numNamedChickens + 2) / Math.log(2);
     }
 
-    public Pair<Map<Character, Integer>, Integer> calcChickenBonuses(Entity center) {
+    public ChickenBonuses calcChickenBonuses(Entity center) {
         int radius = this.getConfig().getInt("named-chicken-radius");
         List<Entity> nearbyEntities = center.getNearbyEntities(radius, radius, radius);
         Set<String> namedChickensPos = new HashSet<>();
@@ -88,7 +87,7 @@ public class ChickensLaySpawnEggs extends JavaPlugin implements Listener, Comman
             }
         }
 
-        return new Pair<>(letterBonuses, namedChickensPos.size());
+        return new ChickenBonuses(letterBonuses, namedChickensPos.size());
     }
 
     public Material getRandomSpawnEgg(Map<Character, Integer> letterBonuses){
@@ -156,9 +155,9 @@ public class ChickensLaySpawnEggs extends JavaPlugin implements Listener, Comman
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
         if(sender instanceof Player player){
-            Pair<Map<Character, Integer>, Integer> bonuses = calcChickenBonuses(player);
-            Map<Character, Integer> letterBonuses = bonuses.getA();
-            Integer numNamedChickens = bonuses.getB();
+            ChickenBonuses bonuses = calcChickenBonuses(player);
+            Map<Character, Integer> letterBonuses = bonuses.letterBonuses;
+            int numNamedChickens = bonuses.numNamedChickens;
 
             double spawnChance = this.getConfig().getDouble("spawn-egg-chance");
             double withBonus = spawnChance * calcGeneralChickenBonus(numNamedChickens);
@@ -169,4 +168,15 @@ public class ChickensLaySpawnEggs extends JavaPlugin implements Listener, Comman
         }
         return false;
     }
+
+    private static class ChickenBonuses {
+        public Map<Character, Integer> letterBonuses;
+        public int numNamedChickens;
+
+        public ChickenBonuses(Map<Character, Integer> letterBonuses, int numNamedChickens){
+            this.letterBonuses = letterBonuses;
+            this.numNamedChickens = numNamedChickens;
+        }
+    }
+
 }
