@@ -155,13 +155,14 @@ public class ChickensLaySpawnEggs extends JavaPlugin implements Listener, Comman
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
         if(sender instanceof Player player){
+            int radius = this.getConfig().getInt("named-chicken-radius");
             ChickenBonuses bonuses = calcChickenBonuses(player);
             Map<Character, Integer> letterBonuses = bonuses.letterBonuses;
             int numNamedChickens = bonuses.numNamedChickens;
 
             double spawnChance = this.getConfig().getDouble("spawn-egg-chance");
             double withBonus = spawnChance * calcGeneralChickenBonus(numNamedChickens);
-            player.sendMessage("§7Unique coords with named chickens nearby: " + numNamedChickens);
+            player.sendMessage("§7Unique coords with named chickens within " + radius + " blocks: " + numNamedChickens);
             player.sendMessage("§7Chance to lay a spawn egg: " + Math.floor(withBonus * 10000) / 100 + "%");
             player.sendMessage("§7Letter bonuses: " + letterBonuses.toString());
             return true;
