@@ -9,12 +9,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,6 +54,13 @@ public class ChickensLaySpawnEggs extends JavaPlugin implements Listener, Comman
                 itemStack.setType(getRandomSpawnEgg(letterBonuses));
             }
         }
+    }
+    @EventHandler
+    public void onCreatureSpawn(CreatureSpawnEvent e) {
+        LivingEntity entity = e.getEntity();
+        boolean isNamed = entity.getCustomName() != null;
+
+        entity.setRemoveWhenFarAway(!isNamed);
     }
 
     // Returns log2(n + 2)
