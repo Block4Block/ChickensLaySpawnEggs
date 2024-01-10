@@ -70,7 +70,7 @@ public class ChickensLaySpawnEggs extends JavaPlugin implements Listener, Comman
     }
 
     public ChickenBonuses calcChickenBonuses(Entity center) {
-        int radius = this.getConfig().getInt("named-chicken-radius");
+        double radius = this.getConfig().getInt("named-chicken-radius") + 0.5;
         List<Entity> nearbyEntities = center.getNearbyEntities(radius, radius, radius);
         Set<String> namedChickensPos = new HashSet<>();
         Map<Character, Integer> letterBonuses = new HashMap<>();

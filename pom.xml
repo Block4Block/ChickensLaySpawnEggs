@@ -6,7 +6,7 @@
 
     <groupId>hasjamon.chickenslayspawneggs</groupId>
     <artifactId>ChickensLaySpawnEggs</artifactId>
-    <version>3.0</version>
+    <version>3.1</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

@@ -2,7 +2,7 @@ name: ChickensLaySpawnEggs
 main: hasjamon.chickenslayspawneggs.ChickensLaySpawnEggs
 api-version: 1.20
 authors: [ HasJamOn, Bahm ]
-version: 3.0
+version: 3.1
 description: ChickensLaySpawnEggs plugin
 commands:
   chickenbonus:
